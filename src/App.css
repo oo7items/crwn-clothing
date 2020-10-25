@@ -7,3 +7,8 @@ a {
     text-decoration: none;
     color: black;
 }
+
+* {
+    /* 框的大小应为边框，现在我们的元素为红线，因为填充边距和边框不会影响元素的大小 */
+    box-sizing: border-box;
+}
