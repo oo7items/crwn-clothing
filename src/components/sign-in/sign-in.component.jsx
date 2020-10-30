@@ -4,7 +4,7 @@ import FromInput from '../from-input/from-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
 /** 谷歌登录验证方法 */
-import {signInwithGoogle} from '../../firebase/firebase.untils';
+import {auth, signInwithGoogle} from '../../firebase/firebase.untils';
 
 
 class SignIn extends React.Component {
@@ -16,6 +16,18 @@ class SignIn extends React.Component {
             password: ''
         }
     }
+
+    handleSubmit = async event => {
+        event.preventDefault();
+        const { email, password } = this.state;
+
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            this.setState({ email: '', password: ''});
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     handleChange = event => {
         /** 从事件点目标中提取值和名称 */
@@ -38,8 +50,8 @@ class SignIn extends React.Component {
                 <span>Sign in with your email and password</span>
 
                 <form onSubmit={this.handleSubmit}>
-                    <FromInput name="email" type="email" handleChange={this.handleChange} value={this.state.email} label="email" required/>
-                    <FromInput name="password" type="password" handleChange={this.handleChange} value={this.state.password} label="password" required/>
+                    <FromInput name='email' type='email' handleChange={this.handleChange} value={this.state.email} label="email" required/>
+                    <FromInput name='password' type='password'handleChange={this.handleChange} value={this.state.password} label="password" required/>
 
                     <div className='buttons'>
                         <CustomButton type='submit'> Sign in </CustomButton>

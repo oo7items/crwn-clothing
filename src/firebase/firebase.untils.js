@@ -13,6 +13,34 @@ const config = {
     measurementId: "G-YXLJCLB2Z7"
 };
 
+export const createUserProfileDocument = async (userAuth, additionalData) => { /** 用户认证 附加数据 */
+    if (!userAuth) return;
+    // console.log(firestore.doc('users/128fdsgadty'));
+    /** 用户参考 */
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
+
+    const snapShot = await userRef.get();
+
+    // console.log(snapShot.data());
+    if(!snapShot.exists) { /** 文档是否存在 */
+        const { displayName, email } = userAuth;
+        const createAt = new Date(); // 获取用户时间
+
+        try {
+            await userRef.set({
+                displayName,
+                email,
+                createAt,
+                ...additionalData
+            })
+        } catch (error) {
+            console.log('error creating user', console.error.message);
+        }
+    }
+
+    return userRef;
+}
+
 firebase.initializeApp(config);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
@@ -21,3 +49,8 @@ export const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({prompt: 'select_account' });
 
 export const signInwithGoogle = () => auth.signInWithPopup(provider);
+
+
+
+
+
