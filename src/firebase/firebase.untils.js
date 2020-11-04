@@ -14,15 +14,15 @@ const config = {
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => { /** 用户认证 附加数据 */
-    if (!userAuth) return;
+    if (!userAuth) return; // 如果没有用户 !null = true 直接返回空
     // console.log(firestore.doc('users/128fdsgadty'));
     /** 用户参考 */
     const userRef = firestore.doc(`users/${userAuth.uid}`);
-
+    /** 确定那里是否有数据 */
     const snapShot = await userRef.get();
 
     // console.log(snapShot.data());
-    if(!snapShot.exists) { /** 文档是否存在 */
+    if(!snapShot.exists) { /** 如果文档不存在 */
         const { displayName, email } = userAuth;
         const createAt = new Date(); // 获取用户时间
 
@@ -38,16 +38,18 @@ export const createUserProfileDocument = async (userAuth, additionalData) => { /
         }
     }
 
-    return userRef;
+    return userRef; // 让用户引用我们创建的数据
 }
 
 firebase.initializeApp(config);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
-export const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({prompt: 'select_account' });
 
+/** 谷歌验证 */
+export const provider = new firebase.auth.GoogleAuthProvider();
+/** Google身份验证时始终触发Google弹出窗口 */
+provider.setCustomParameters({prompt: 'select_account' });
 export const signInwithGoogle = () => auth.signInWithPopup(provider);
 
 
