@@ -13,8 +13,9 @@ const config = {
     measurementId: "G-YXLJCLB2Z7"
 };
 
-export const createUserProfileDocument = async (userAuth, additionalData) => { /** 用户认证 附加数据 */
-    if (!userAuth) return; // 如果没有用户 !null = true 直接返回空
+// 将登录账号存储到数据库中
+export const createUserProfileDocument = async (userAuth, additionalData) => { /** 用户认证 附加数据(用户登录需要使用的数据) */
+    if (!userAuth) return; // 如果没有用户登录直接推出
     // console.log(firestore.doc('users/128fdsgadty'));
     /** 用户参考 */
     const userRef = firestore.doc(`users/${userAuth.uid}`);

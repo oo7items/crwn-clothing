@@ -1,3 +1,4 @@
+import './user.types';
 const INITIAL_STATE = {
     currentUser: null
 }
@@ -8,9 +9,9 @@ const INITIAL_STATE = {
 // 我们确定使用的是switch语句，而switch语句是有点像一个很大的IF语句。
 const userReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case 'SET_CURRENT_USER':
+        case 'UserActionTypes.SET_CURRENT_USER':
             return {
-                ...state,
+                ...state, // 新状态
                 currentUser: action.payload
             }
 
