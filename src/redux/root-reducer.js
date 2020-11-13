@@ -3,13 +3,33 @@
 import { combineReducers } from 'redux';
 import userReducer from './user/user.reducer';
 import cartReducer from './cart/cart.reducer';
-// 组合减速器
-// redux中的完整状态只是Jason的一个大对象
-export default combineReducers({
+import directoryReducer from './directory/directory.reducer';
+import shopReducer from './shop/shop.reducer';
+// 持久化
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: ['cart']
+};
+
+const rootReducer = combineReducers({
     user: userReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    directory: directoryReducer,
+    shop: shopReducer
 });
 
+export default persistReducer(persistConfig, rootReducer);
+
+// 组合减速器
+// redux中的完整状态只是Jason的一个大对象
+// export default combineReducers({
+//     user: userReducer,
+//     cart: cartReducer
+// });
 
 
 // 以上等同于使用rootReducer创建组合减速器
